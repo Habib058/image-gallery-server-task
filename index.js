@@ -5,7 +5,6 @@ const { MongoClient } = require('mongodb');
 const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config();
 const app = express()
-console.log(process.env.DB_USER);
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -16,7 +15,7 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
     const imageCollections = client.db(`${process.env.DB_NAME}`).collection("images");
-    // perform actions on the collection object
+   
 
     app.post('/addImage', (req, res) => {
         const file = req.body;
@@ -30,7 +29,7 @@ client.connect(err => {
         imageCollections.find({})
             .toArray((err, documents) => {
                 res.send(documents);
-                // console.log(documents)
+                
             })
     })
 
@@ -46,7 +45,7 @@ client.connect(err => {
 
     app.post('/imageByDates', (req, res) => {
         const date = req.body;
-        // console.log(date.date);
+        
         imageCollections.find({ date: date.date })
             .toArray((err, documents) => {
                 res.send(documents);
